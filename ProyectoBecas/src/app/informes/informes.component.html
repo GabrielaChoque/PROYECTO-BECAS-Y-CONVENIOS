@@ -1,0 +1,120 @@
+<div class="col-md-12">
+    <div class="card text-white bg-dark mb-3">
+      <div class="card-header text-center">GESTIONAR INFORMES</div>
+      <div class="card-body">
+        <a href="" class="btn btn-success btn-sm" title="Add New Estudiante" data-toggle="modal"
+          data-target="#staticBackdrop">
+          <i class="bi bi-plus-circle"></i> AÑADIR INFORME
+        </a>
+  
+        <form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+          <div class="input-group">
+            <input type="text" class="form-control">
+            <!-- <span class="input-group-append">
+              <button class="btn btn-secondary" type="submit">
+                <i class="bi bi-search"></i>
+              </button>
+            </span> -->
+          </div>
+        </form>
+        <!-- <input type="text" class="form-control" [(ngModel)]="filterpost" name="filterPost"> -->
+        <br />
+        <br />
+        
+        <div class="table-responsive  ">
+          <table class="table table-hover table-dark">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Titulo</th>
+                <th>Fecha</th>
+                <th>Descripcion</th>
+                <th>ID Practicante</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor=" let i= index; let a of informe">
+                <td>{{i+1}}</td>
+                <td>
+                  <input class="col-12" type="text" *ngIf="a.Editando" [(ngModel)]="a.titulo">
+                  <span *ngIf="!a.Editando">{{a.titulo}}</span>
+                </td>
+                <td>
+                  <input class="col-12" type="text" *ngIf="a.Editando" [(ngModel)]="a.fecha">
+                  <span *ngIf="!a.Editando">{{a.fecha}}</span>
+                </td>
+                <td>
+                  <input class="col-12" type="text" *ngIf="a.Editando" [(ngModel)]="a.descripcion">
+                  <span *ngIf="!a.Editando">{{a.descripcion}}</span>
+                </td>
+                <td>
+                  <input class="col-12" type="text" *ngIf="a.Editando" [(ngModel)]="a.id_practicante">
+                  <span *ngIf="!a.Editando">{{a.id_practicante}}</span>
+                </td>
+                <td>
+                  <button type="button" class="btn btn-warning col-6" (click)="a.Editando=true;"
+                    *ngIf="!a.Editando"><i class="bi bi-pencil"></i></button>
+                  <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal1" (click)='administradorSeleccionado=a;' style="margin-right:10px;">⠀modificar⠀</button> -->
+                  <button type="button" class="btn btn-warning col-6" (click)="ModificarInforme(a)" *ngIf="a.Editando"
+                    (click)="a.Editando=true;"><img width="20px" height="20px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP+gvaeTAAABXElEQVRogWNgGAWjYBSMgoEEjLgkTGbc/g9jf31xD6uadjseqjmk5ZYYsqM6T2eoVhCjj4lqLqAi+M/AUG4643YHMWpZaO0YGCgrKUbhd/X04lUP9QQDoZgYlDEAA8TExKD2AAMDYU8Meg8wMEA8gUtuSHgAHxj1wECDIe8BouoBRmYWhv9//2CIf/z5j4GfnbgwwFfuf/rNTJQZ2ABRtrPziTAwMmP6dd2tnwwff/4j23IGBojjt77iJVs/UTHAzM7FwCUqhyH+lIGBYfJDsu2mChjyeWDUAwMNRj0w0ICoUmhugAyDnjgHrd2CAi6++MGQsvEJQXVExQC9Hc/AwMCgL0GcnSMjCaGDCzfvUtsdDAwMDAwG6sok6xmZMUBOSNEKjMwYGM0DVASjeWCgwWgeGGgwmgcGGhDlgYsvftDaHRjgApF2EpWEiGmXDxQY8kloFIyCUTAKBhYAAEvUTIshBoCmAAAAAElFTkSuQmCC"/></button>
+                  <button type="button" class="btn btn-danger col-6" (click)="EliminarInforme(a)"><i
+                    class="bi bi-trash"></i></button>
+                  <!-- <button type="button" class="btn btn-primary" (click)="seleccionado=a;">select</button> -->
+                </td>
+              </tr>
+              <!-- <tr>
+                <td>1</td>
+                <td>ARMONIA</td>
+                <td>SUPERIOR</td>
+                <td>
+                  
+                  <a href="" title="Edit Estudiante"><button class="btn btn-primary btn-sm"><i  class="fa fa-pencil-square-o" aria-hidden="true"></i> MODIFICAR</button></a>
+                  <a href="" title="Edit Estudiante"><button class="btn btn-danger btn-sm"><i  class="fa fa-pencil-square-o" aria-hidden="true"></i> ELIMINAR</button></a>
+  
+                </td>
+              </tr> -->
+  
+            </tbody>
+          </table>
+          <div class="pagination-wrapper">
+          </div>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+  <!-- MODAL AGREGAR CURSO -->
+  <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" #CerrarBoton>
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3"  [formGroup]="newInforme" >
+            <label for="nombre" class="form-label">TITULO: </label>
+            <input type="text" class="form-control" formControlName="titulo">
+  
+            <label for="apellido" class="form-label">FECHA: </label>
+            <input type="text" class="form-control" formControlName="fecha">
+  
+            <label for="apellido" class="form-label">DESCRIPCION: </label>
+            <input type="text" class="form-control" formControlName="descripcion">
+  
+            <label for="apellido" class="form-label">ID PRACTICANTE: </label>
+            <input type="text" class="form-control" formControlName="id_practicante">
+  
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">CANCELAR</button>
+          <button type="button" class="btn btn-primary" (click)="AgregarInforme()">GUARDAR</button>
+        </div>
+      </div>
+    </div>
+  </div>

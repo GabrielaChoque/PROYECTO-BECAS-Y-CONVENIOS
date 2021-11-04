@@ -1,0 +1,206 @@
+<!-- MANIAS PARA NUESTRO PROPIO USO DE .text de algun elemento -->
+<!-- <input type="text"  [(ngModel)]="txtGG">
+<span>{{txtGG}}</span>
+<button type="button" class="btn btn-primary" (click)="ObtenertxtGG()">obtener</button> -->
+
+<style>
+    .modal-content{
+      background: linear-gradient(1deg,#42a577,#21583c);
+    }
+    .modal-body .form-control{
+      background: linear-gradient(150deg,#4b8157,#589e61);
+    }
+</style>
+  <!-- Button trigger modal -->
+  <strong>
+    <h2 class="text-center text-bold text-primary">GESTIONAR PRACTICANTE</h2>
+  </strong>
+  <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" (click)="CargarPracticante()" >AGREGAR Practicante</button>
+  <br><br>
+  <!-- MODAL DE AGREGACION-->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">AGREGAR PRACTICANTE</h4>
+          <button type="button" #CerrarBoton class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">&times;</span></button>
+        </div>
+        
+        <div class="modal-body">
+          <div class="mb-3" [formGroup]="newPracticante">
+            
+            <label class="form-label">CI Practicante: </label>
+            <input type="text" class="form-control" formControlName="ci_practicante">
+            <label class="form-label">Nombre: </label>
+            <input type="text" class="form-control" formControlName="nombre">
+            <label class="form-label">Apellido Paterno: </label>
+            <input type="text" class="form-control" formControlName="apellido_paterno">
+            <label class="form-label">Apellido Materno: </label>
+            <input type="text" class="form-control" formControlName="apellido_materno">
+            <label for="nombre" class="form-label">Carrera: </label>
+            <input type="text" class="form-control" formControlName="carrera">
+            <label for="nombre" class="form-label">Facultad: </label>
+            <input type="text" class="form-control" formControlName="facultad">
+            <label for="nombre" class="form-label">Contrasenia: </label>
+            <input type="text" class="form-control" formControlName="contrasenia">
+            <label for="nombre" class="form-label">id_admin: </label>
+            <input type="text" class="form-control" formControlName="id_administrativo">
+            
+          </div>
+  
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">CANCELAR</button>
+          <button type="button" class="btn btn-primary" (click)="AgregarPracticante()">GUARDAR</button>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+
+  
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-dark">
+    <thead class="bg-primary ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">CI</th>
+        <th scope="col">Apellidos y Nombres</th>
+        <th scope="col">Carrera</th>
+        <th scope="col">Facultad</th>
+        <th scope="col">id_admin</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of pract; let i= index"  >
+        <td>{{i+1}}</td>
+        <td>
+            <span *ngIf="!a.Editando">{{a.ci_practicante}}</span>
+        </td>
+        
+        <td>
+          <span *ngIf="!a.Editando">{{a.apellido_paterno}}⠀</span>
+          
+          <span *ngIf="!a.Editando">{{a.apellido_materno}}⠀</span>
+          
+          <span *ngIf="!a.Editando">{{a.nombre}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.carrera}}</span>
+        </td>
+        <td>
+            <span *ngIf="!a.Editando">{{a.facultad}}</span>
+        </td>
+        
+        <td>
+          <span *ngIf="!a.Editando">{{a.id_administrativo}}</span>
+        </td>
+
+        <td>
+          <!-- <button type="button" class="btn btn-warning" (click)="a.Editando=true;" *ngIf="!a.Editando">Editar</button> -->
+          <button type="button" class="btn button-success" data-toggle="modal" data-target="#ViewPracticante"
+            (click)='PracticanteSeleccionado=a;' style="margin-right: 10px;"><i class="bi bi-eye"></i></button>
+          <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModal1"
+            (click)='PracticanteSeleccionado=a;' style="margin-right: 10px;"><i class="bi bi-pencil"></i></button>
+          <button type="button" class="btn btn-warning" (click)="ModificarPracticante(a)" *ngIf="a.Editando"
+            (click)="a.Editando=true;"><i class="bi bi-box-arrow-up"></i></button>
+          <button type="button" class="btn btn-danger" (click)="EliminarPracticante(a)"><i
+              class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+<!-- MODAL de MODIFICACION -->
+<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">MODIFICAR PRACTICANTE</h4>
+        <button type="button" #CerrarBotonMod class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+
+      </div>
+      <div class="modal-body">
+        <div class="mb-3" [formGroup]="newPracticante">
+
+          <label for="nombre" class="form-label">CI Practicante: </label>
+          <input type="text" class="form-control" formControlName="ci_practicante"
+            [(ngModel)]="PracticanteSeleccionado.ci_practicante">
+          <label for="nombre" class="form-label">Nombre: </label>
+          <input type="text" class="form-control" formControlName="nombre"
+            [(ngModel)]="PracticanteSeleccionado.nombre">
+          <label for="nombre" class="form-label">Apellido Paterno: </label>
+          <input type="text" class="form-control" formControlName="apellido_paterno"
+            [(ngModel)]="PracticanteSeleccionado.apellido_paterno">
+          <label for="nombre" class="form-label">Apellido Materno: </label>
+          <input type="text" class="form-control" formControlName="apellido_materno"
+            [(ngModel)]="PracticanteSeleccionado.apellido_materno">
+          <label for="nombre" class="form-label">Carrera: </label>
+          <input type="text" class="form-control" formControlName="carrera" [(ngModel)]="PracticanteSeleccionado.carrera">
+          <label for="nombre" class="form-label">Facultad: </label>
+          <input type="text" class="form-control" formControlName="facultad" [(ngModel)]="PracticanteSeleccionado.facultad">
+          
+          <label for="nombre" class="form-label">Contraseña: </label>
+          <input type="text" class="form-control" formControlName="contrasenia"
+            [(ngModel)]="PracticanteSeleccionado.contrasenia">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">CANCELAR</button>
+        <button type="button" class="btn btn-primary"
+          (click)="ModificarPracticante(PracticanteSeleccionado)">GUARDAR</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+<!-- MODAL de VISUALIZACION -->
+<div class="modal fade" id="ViewPracticante" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title text-center" id="myModalLabel">INFORMACION DEL Practicante</h4>
+        <button type="button" #CerrarBotonMod class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3" [formGroup]="newPracticante">
+
+          <label for="nombre" class="form-label">Ap. Paterno: </label>
+          <input type="text" class="form-control" formControlName="apellido_paterno" [(ngModel)]="PracticanteSeleccionado.apellido_paterno">
+          <label for="nombre" class="form-label">Ap. Materno: </label>
+          <input type="text" class="form-control" formControlName="apellido_materno"  [(ngModel)]="PracticanteSeleccionado.apellido_materno">
+          <label for="nombre" class="form-label">Nombre: </label>
+          <input type="text" class="form-control" formControlName="nombre" [(ngModel)]="PracticanteSeleccionado.nombre">
+          <label for="nombre" class="form-label">Carnet Identidad: </label>
+          <input type="text" class="form-control" formControlName="ci_practicante" [(ngModel)]="PracticanteSeleccionado.ci_practicante">
+          <label for="nombre" class="form-label">Carrera: </label>
+          <input type="text" class="form-control" formControlName="carrera" [(ngModel)]="PracticanteSeleccionado.carrera">
+          <label for="nombre" class="form-label">Facultad: </label>
+          <input type="text" class="form-control" formControlName="facultad" [(ngModel)]="PracticanteSeleccionado.facultad">
+          <label for="nombre" class="form-label">Contraseña: </label>
+          <input type="text" class="form-control" formControlName="contrasenia" [(ngModel)]="PracticanteSeleccionado.contrasenia">
+          
+          <label for="nombre" class="form-label">ID Administrativo: </label>
+          <input type="text" class="form-control" formControlName="id_administrativo" [(ngModel)]="PracticanteSeleccionado.id_administrativo">
+          
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+
+      </div>
+
+    </div>
+  </div>
+</div>
